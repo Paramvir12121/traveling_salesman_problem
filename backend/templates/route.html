@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Route Finder | Flask OSM App{% endblock %}
+
+{% block content %}
+    <h2>Find the Most Efficient Route</h2>
+    <form id="route-form" hx-post="{{ url_for('get_route') }}" hx-target="#route-result" hx-swap="innerHTML">
+        <label for="address1">Address 1:</label>
+        <input type="text" id="address1" name="address1" required><br>
+
+        <label for="address2">Address 2:</label>
+        <input type="text" id="address2" name="address2" required><br>
+
+        <label for="address3">Address 3:</label>
+        <input type="text" id="address3" name="address3"><br>
+
+        <button type="submit">Find Route</button>
+    </form>
+
+    <div id="route-result">
+        <!-- Route result will be displayed here by htmx -->
+    </div>
+{% endblock %}

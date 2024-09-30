@@ -1,0 +1,6 @@
+{% if route %}
+    <h3>Calculated Route:</h3>
+    <pre>{{ route | safe }}</pre>
+{% else %}
+    <p>No route found.</p>
+{% endif %}
