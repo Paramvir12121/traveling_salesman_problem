@@ -3,6 +3,8 @@ import requests
 
 app = Flask(__name__)
 
+headers = {'User-Agent': 'PathFinder/1.0 (paramvir.singh.ic@gmail.com)' }
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -23,7 +25,10 @@ def get_route():
             coord = get_coordinates_from_address(address)
             if coord:
                 coordinates.append(coord)
+            else:
+                return "Error"
 
+    print("Coordinates", coordinates)
     if len(coordinates) < 2:
         return "<p>At least two valid addresses are required</p>", 400
 
@@ -43,11 +48,23 @@ def get_coordinates_from_address(address):
         'limit': 1
     }
 
-    response = requests.get(nominatim_url, params=params)
-    if response.status_code == 200 and response.json():
-        location_data = response.json()[0]
-        return [float(location_data['lat']), float(location_data['lon'])]
+    response = requests.get(nominatim_url, params=params,headers=headers)
+    print("Address to Coordinates res ", response)
+
+    if response.status_code == 200:
+        try:
+            data = response.json()
+            if data:
+                location_data = data[0]
+                return [float(location_data['lat']), float(location_data['lon'])]
+            else:
+                print(f"No results found for address: {address}")
+                return None
+        except requests.exceptions.JSONDecodeError:
+            print(f"Invalid JSON response for address: {address}")
+            return None
     else:
+        print(f"Error fetching data for address {address}: Status Code {response.status_code}")
         return None
 
 def get_osrm_route(coordinates):
