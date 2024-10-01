@@ -13,7 +13,6 @@ def home():
 def get_route_page():
     return render_template('route.html', route=None)
 
-from flask import Flask, render_template, request, jsonify
 
 @app.route('/get-route', methods=['POST'])
 def get_route():
@@ -25,19 +24,15 @@ def get_route():
             coord = get_coordinates_from_address(address)
             if coord:
                 coordinates.append(coord)
-            else:
-                return "Error"
 
-    print("Coordinates", coordinates)
     if len(coordinates) < 2:
         return "<p>At least two valid addresses are required</p>", 400
 
     # Call the OSRM API with the coordinates
     route = get_osrm_route(coordinates)
 
-    # Render only the route result template if called via htmx
+    # Return the route as JSON
     return render_template('partials/route_result.html', route=route)
-
 
 def get_coordinates_from_address(address):
     nominatim_url = "https://nominatim.openstreetmap.org/search"
@@ -73,6 +68,7 @@ def get_osrm_route(coordinates):
 
     response = requests.get(osrm_url)
     if response.status_code == 200:
+        print("OSRM response ", response.json())
         return response.json()
     else:
         return {"error": "Unable to fetch route from OSRM"}

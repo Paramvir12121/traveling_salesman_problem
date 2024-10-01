@@ -1,6 +1,12 @@
+<!-- templates/partials/route_result.html -->
 {% if route %}
     <h3>Calculated Route:</h3>
-    <pre>{{ route | safe }}</pre>
+    <!-- The map container -->
+    <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+    <!-- Include the route data in a script tag with type application/json -->
+    <script type="application/json" id="route-data">
+        {{ route | tojson | safe }}
+    </script>
 {% else %}
     <p>No route found.</p>
 {% endif %}
