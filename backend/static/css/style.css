@@ -10,11 +10,20 @@
   margin-bottom: 20px;
 }
 
-.route-result img {
+/* .route-result img {
+
   width: 100%;
   max-width: 500px;
   margin-bottom: 20px;
+} */
+
+#map {
+  height: 400px;
+  width: 80%;
+  position: relative;
+  /* z-index: 0; */
 }
+
 
 #route-form {
   display: flex;

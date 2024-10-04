@@ -49,6 +49,9 @@
             // Extract the route coordinates from the JSON object
             var routeCoordinates = route['routes'][0]['geometry']['coordinates'];
             console.log("Route Coordinates: ",routeCoordinates);
+
+            var locationCoordinates = route['waypoints'];
+            console.log("Location Coordinates: ",locationCoordinates);
     
             // Transform coordinates from [lon, lat] to [lat, lon] for Leaflet
             var latLngs = routeCoordinates.map(function(coord) {
