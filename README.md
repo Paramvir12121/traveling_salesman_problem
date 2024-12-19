@@ -2,12 +2,9 @@
 Traveling salesman problem in online map
 
 # Technologies used
-- Go as a backend
-- Gin as backend server
+- Flask as backend server with python as backend language
+    - python-dotenv for env veriable configuration
+- sqlite as db
 - HTMX - for frontend display
-- () React libraries:
-    - react-google-maps/api
-    ```npm i -S @react-google-maps/api```
-    - .env
-    ```npm install dotenv --save```
+
 
