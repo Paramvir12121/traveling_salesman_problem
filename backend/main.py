@@ -42,5 +42,17 @@ def contact():
 
 
 
+@app.route('/checkmap', methods=['GET', 'POST'])
+def checkmap():
+    if request.method == 'POST':
+        location = request.form['location']
+        print(location)
+        # display the locaton on the map
+        return render_template('pages/map/map_layout.html', location=location)
+    return render_template('pages/checkmap.html')
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

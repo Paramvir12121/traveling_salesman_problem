@@ -48,6 +48,12 @@ button:hover {
     background-color: #555;
 }
 
+input {
+    padding: 10px;
+    min-height: 9px;
+    margin-bottom: 10px;
+}
+
 .content-body {
     margin-left: 10px;
     margin-right: 10px;
