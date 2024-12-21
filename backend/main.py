@@ -6,22 +6,40 @@ import requests
 
 app = Flask(__name__)
 
-def get_coordinates(location, api_key):
-            url = "https://nominatim.openstreetmap.org/search"
-            params = {
-                "q": location,
-                "format": "json",
-                "addressdetails": 1,
-                "limit": 1,
-            }
-            response = requests.get(url, params=params)
-            if response.status_code != 200:
-                return None, None
+ 
+
+
+def get_coordinates(location):
+    url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        "q": location.strip(),
+        "format": "json",
+        "addressdetails": 1,
+        "limit": 1,
+    }
+
+    headers = {'User-Agent': Config.OSM_HEADER}
+    
+    try:
+        response = requests.get(url, params=params,headers=headers, timeout=10)
+        response.raise_for_status()  # Raise an HTTPError for bad responses (4xx and 5xx)
+        
+        # Check if the response contains valid JSON
+        if response.headers.get("Content-Type") == "application/json":
             data = response.json()
-            print(data)
             if data:
                 return data[0]['lat'], data[0]['lon']
-            return None, None
+            else:
+                return None, None
+        else:
+            print(f"Unexpected response type: {response.headers.get('Content-Type')}")
+            print(f"Response text: {response.text}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data from the API: {e}")
+    except (ValueError, KeyError) as e:
+        print(f"Error parsing response JSON: {e}")
+    
+    return None, None
 
 
 @app.route('/')
@@ -67,7 +85,7 @@ def checkmap():
         if not location:
             return render_template('pages/error.html', error="Invalid location")
         print(location)
-        latitude, longitude = get_coordinates(location, Config.OPEN_MAP_API)
+        latitude, longitude = get_coordinates(location)
         print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
         if not latitude or not longitude:
             return render_template('pages/error.html', error="Location not found")

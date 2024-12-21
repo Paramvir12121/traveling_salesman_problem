@@ -11,3 +11,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     OPEN_MAP_API = os.getenv('OPENSTREETMAPAPI')
+    OSM_HEADER = os.getenv('OSM_HEADER')
