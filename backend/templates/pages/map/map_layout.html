@@ -5,23 +5,30 @@
     Your Lattitude is {{ latitude }} and Longitude is {{ longitude }}.
     
     
-    <div id="map" class="service-map"></div>
+    <div id="map-container" ></div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var lat = {{latitude}};
-        var lon = {{longitude}};
+        var map; 
+        var lat = {{ latitude }};
+        var lon = {{ longitude }};
        
         document.body.addEventListener('htmx:afterSwap', (event) => {
     // Check if the swapped content includes the map container
-    if (document.getElementById('map')) {
-        var map = L.map('map', {
+    if (document.getElementById('map-container')) {
+        var map = L.map('map-container', {
             center: [lat, lon],
-            zoom: 12
+            zoom: 14
         });
-
+        // if (map) {
+        //     map.remove(); // Remove the existing map instance
+        // }
+       
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+    
+        L.marker([lat, lon]).addTo(map);
+
     }
 });
     </script>
