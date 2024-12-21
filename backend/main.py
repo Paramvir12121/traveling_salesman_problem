@@ -7,8 +7,16 @@ import requests
 app = Flask(__name__)
 
 def get_coordinates(location, api_key):
-            url = f"http://api.openweathermap.org/geo/1.0/direct?q={location}&limit=1&appid={api_key}"
-            response = requests.get(url)
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                "q": location,
+                "format": "json",
+                "addressdetails": 1,
+                "limit": 1,
+            }
+            response = requests.get(url, params=params)
+            if response.status_code != 200:
+                return None, None
             data = response.json()
             print(data)
             if data:
@@ -55,15 +63,17 @@ def contact():
 def checkmap():
     if request.method == 'POST':
         location = request.form['location']
+        location = location.strip()
+        if not location:
+            return render_template('pages/error.html', error="Invalid location")
         print(location)
-        print("Api key: ", Config.OPEN_MAP_API)
-        latitude, longitude = get_coordinates(location, Config.OPEN_MAP_API_KEY)
+        latitude, longitude = get_coordinates(location, Config.OPEN_MAP_API)
         print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
-        if latitude==None and longitude==None:
+        if not latitude or not longitude:
             return render_template('pages/error.html', error="Location not found")
         print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
         # display the locaton on the map
-        return render_template('pages/map/map_layout.html', location=location)
+        return render_template('pages/map/test_map.html', location=location, latitude=latitude, longitude=longitude)
     return render_template('pages/checkmap.html')
 
 
