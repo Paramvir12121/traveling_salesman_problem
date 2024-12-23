@@ -48,6 +48,42 @@ button:hover {
     background-color: #555;
 }
 
+.swap-button {
+    position: relative;
+    }
+
+    .swap-button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #fff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+    .swap-button.loading::after {
+        display: block;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+
+
+
+
 input {
     padding: 10px;
     min-height: 9px;
@@ -95,3 +131,4 @@ input {
     height: 200px;
     width: 100%;
 }
+
