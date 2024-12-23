@@ -38,3 +38,15 @@ def get_coordinates(location):
         error = "Error parsing response JSON"
     
     return None, None, error
+
+
+def optimal_route(location_array):
+    headers = {'User-Agent': Config.OSM_HEADER}
+    url = "https://api.openrouteservice.org/v2/directions/driving-car"
+    coordinates = []
+    error = None
+    for i in range(len(location_array)):
+        location_array[i] = location_array[i].strip()
+        latitude, longitude, error = get_coordinates(location_array[i])
+        coordinates.append({"name": location_array[i], "coordiantes": [ latitude, longitude], "error": error})
+    

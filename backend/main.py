@@ -3,7 +3,7 @@ from flask import render_template
 from flask import request
 from config import Config
 import requests
-from map_functions import get_coordinates
+from map_functions import get_coordinates, optimal_route
 
 
 app = Flask(__name__)
@@ -75,7 +75,10 @@ def checkroute():
     if request.method == 'POST':
         routes = request.form.getlist('locations')
         print("routes",routes)
-        
+        if not routes:
+            return render_template('pages/error.html', error="Invalid routes")
+        coodinates = optimal_route(routes)
+        print(coodinates)
     return render_template('pages/forms/checkroutesform.html')
 
 
