@@ -66,8 +66,22 @@ def checkmap():
         print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
         # display the locaton on the map
         return render_template('pages/map/map_layout.html', location=location, latitude=latitude, longitude=longitude)
-    return render_template('pages/checkmap.html')
+    return render_template('pages/forms/checkmap.html')
 
+
+
+@app.route('/checkroute', methods=['GET', 'POST'])
+def checkroute():
+    if request.method == 'POST':
+        routes = request.form.getlist('locations')
+        print("routes",routes)
+        
+    return render_template('pages/forms/checkroutesform.html')
+
+
+@app.route('/add-location')
+def add_location():
+    return '<input type="text" name="locations" placeholder="Enter your location">'  
 
 
 
