@@ -65,16 +65,19 @@ def optimal_route(location_array):
         for location in base_coordinates:
             route_for = route[-1]["coordinates"]
             pass
-            
+            # nearest_neighbour(base_coordinates, route_for, route)
         
-            
-
     return route, error
     
-    
 
 
-
-def nearest_neighbour(base_coordinates, route_for):
+def nearest_neighbour(base_coordinates, route_for, route):
     # find the nearest neighbor to the route_for in the base_coordinates
-    pass
+    # return the nearest neighbor and
+    # the distance between the route_for and the nearest neighbor
+    # remove the nearest neighbor from the base_coordinates and add to route
+    for location in base_coordinates:
+        pass
+        # calculate the distance between the route_for and the location
+        # if the distance is less than the previous distance
+        # update the nearest neighbor and the distance
