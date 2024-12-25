@@ -77,8 +77,8 @@ def checkroute():
         print("routes",routes)
         if not routes:
             return render_template('pages/error.html', error="Invalid routes")
-        coodinates = optimal_route(routes)
-        print(coodinates)
+        visit_sequence = optimal_route(routes)
+        print(visit_sequence)
     return render_template('pages/forms/checkroutesform.html')
 
 

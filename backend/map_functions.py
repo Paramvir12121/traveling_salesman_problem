@@ -43,10 +43,41 @@ def get_coordinates(location):
 def optimal_route(location_array):
     headers = {'User-Agent': Config.OSM_HEADER}
     url = "https://api.openrouteservice.org/v2/directions/driving-car"
-    coordinates = []
+    base_coordinates = []
     error = None
     for i in range(len(location_array)):
         location_array[i] = location_array[i].strip()
         latitude, longitude, error = get_coordinates(location_array[i])
-        coordinates.append({"name": location_array[i], "coordiantes": [ latitude, longitude], "error": error})
+        base_coordinates.append({"name": location_array[i], "coordiantes": [ float(latitude), float(longitude)], "error": error})
     
+    # use symetric TSP to find the optimal route
+    # using nearest neighbor algorithm
+
+    # initialize the route with the start point
+    start_point = base_coordinates[0]["coordiantes"]
+    start_location_name = base_coordinates[0]["name"]
+    print("coordinates: ",start_point, "location: ", start_location_name)
+    route = [{"coordinates": start_point, "location": start_location_name}]
+    base_coordinates.pop(0)
+    while base_coordinates:
+        print("Coordinates: ", base_coordinates)
+        # find the nearest neighbor
+        for location in base_coordinates:
+            route_for = route[-1]["coordinates"]
+            pass
+            # nearest_neighbour(base_coordinates, route_for, route)
+        
+    return route, error
+    
+
+
+def nearest_neighbour(base_coordinates, route_for, route):
+    # find the nearest neighbor to the route_for in the base_coordinates
+    # return the nearest neighbor and
+    # the distance between the route_for and the nearest neighbor
+    # remove the nearest neighbor from the base_coordinates and add to route
+    for location in base_coordinates:
+        pass
+        # calculate the distance between the route_for and the location
+        # if the distance is less than the previous distance
+        # update the nearest neighbor and the distance
