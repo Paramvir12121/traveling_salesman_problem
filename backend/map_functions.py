@@ -41,8 +41,7 @@ def get_coordinates(location):
 
 
 def optimal_route(location_array):
-    headers = {'User-Agent': Config.OSM_HEADER}
-    url = "https://api.openrouteservice.org/v2/directions/driving-car"
+    
     base_coordinates = []
     error = None
     for i in range(len(location_array)):
@@ -62,10 +61,9 @@ def optimal_route(location_array):
     while base_coordinates:
         print("Coordinates: ", base_coordinates)
         # find the nearest neighbor
-        for location in base_coordinates:
-            route_for = route[-1]["coordinates"]
-            pass
-            # nearest_neighbour(base_coordinates, route_for, route)
+        route_for = route[-1]["coordinates"]
+        nearest_neighbour(base_coordinates, route_for, route)
+            
         
     return route, error
     
@@ -76,8 +74,10 @@ def nearest_neighbour(base_coordinates, route_for, route):
     # return the nearest neighbor and
     # the distance between the route_for and the nearest neighbor
     # remove the nearest neighbor from the base_coordinates and add to route
+    nearest_neighbor = None
+    distance = None
+    headers = {'User-Agent': Config.ORS_API_TOKEN_NAME, 'Authorization': Config.ORS_API_TOKEN}
+    url = "https://api.openrouteservice.org/v2/directions/driving-car"
+
     for location in base_coordinates:
         pass
-        # calculate the distance between the route_for and the location
-        # if the distance is less than the previous distance
-        # update the nearest neighbor and the distance

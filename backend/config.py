@@ -12,3 +12,5 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     OPEN_MAP_API = os.getenv('OPENSTREETMAPAPI')
     OSM_HEADER = os.getenv('OSM_HEADER')
+    ORS_API_TOKEN_NAME=os.getenv('ORS_API_TOKEN_NAME')
+    ORS_API_TOKEN=os.getenv('ORS_API_TOKEN')
