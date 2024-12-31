@@ -58,57 +58,28 @@ def optimal_route(location_array):
     print("Start point coordinates: ",start_point, "Start Location name: ", start_location_name)
     route = [{"coordinates": start_point, "location": start_location_name}]
     base_coordinates.pop(0)
-    while base_coordinates:
-        print("Coordinates: ", base_coordinates)
-        # find the nearest neighbor
-        route_for = route[-1]["coordinates"]
-        nearest_neighbour(base_coordinates, route_for, route)
+    # for _ in range(2):  # for testing
+    #     print("Coordinates: ", base_coordinates)
+    #     # find the nearest neighbor
+    #     route_for = route[-1]["coordinates"]
+    #     nearest_neighbour(base_coordinates, route_for, route)
             
         
     return route, error
+
+
+def get_route(coordinates):
+    coord_str = ";".join([f"{coord[1]},{coord[0]}" for coord in coordinates])
+    osrm_url = f"http://router.project-osrm.org/route/v1/driving/{coord_str}?overview=full&geometries=geojson"
+
+    response = requests.get(osrm_url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": "Unable to fetch route from OSRM"}
     
 
 
 def nearest_neighbour(base_coordinates, route_for, route):
-    # find the nearest neighbor to the route_for in the base_coordinates
-    # return the nearest neighbor and
-    # the distance between the route_for and the nearest neighbor
-    # remove the nearest neighbor from the base_coordinates and add to route
-    nearest_neighbor = None
-    nearest_distance = None
-    start_coords = route_for
-    for location in base_coordinates:
-        end_coords = location["coordiantes"]
-        url = "https://api.openrouteservice.org/v2/directions/driving-car"
-        headers = {
-            "Authorization": Config.ORS_API_TOKEN,
-            "Content-Type": "application/json"
-        }
-        payload = {
-            "coordinates": [start_coords, end_coords],
-            "units": "m"  # or "km" for kilometers
-        }
-        try:
-            response = requests.get(url, json=payload, headers=headers, timeout=10)
-            response.raise_for_status()  # Raise an HTTPError for bad responses (4xx and 5xx)
-            
-            # Check if the response contains valid JSON
-            if response.headers.get("Content-Type") == "application/json" or response.headers.get("Content-Type") == "application/json; charset=utf-8":
-                data = response.json()
-                if data:
-                    distance = data["routes"][0]["summary"]["distance"]
-                    if not nearest_distance or distance < nearest_distance:
-                        nearest_distance = distance
-                        nearest_neighbor = location
-                else:
-                    print("No data in response")
-            else:
-                print(f"Unexpected response type: {response.headers.get('Content-Type')}")
-                print(f"Response text: {response.text}")
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching data from the API: {e}")
-        except (ValueError, KeyError) as e:
-            print(f"Error parsing response JSON: {e}")
-        if nearest_neighbor:
-            route.append({"coordinates": nearest_neighbor["coordiantes"], "location": nearest_neighbor["name"]})
-            base_coordinates.remove(nearest_neighbor)
+    pass
+        
