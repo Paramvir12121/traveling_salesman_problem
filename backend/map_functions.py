@@ -69,6 +69,7 @@ def optimal_route(location_array):
 
 
 def get_route(coordinates):
+    # coordinates = [[lat1, lon1], [lat2, lon2]]
     coord_str = ";".join([f"{coord[1]},{coord[0]}" for coord in coordinates])
     osrm_url = f"http://router.project-osrm.org/route/v1/driving/{coord_str}?overview=full&geometries=geojson"
 

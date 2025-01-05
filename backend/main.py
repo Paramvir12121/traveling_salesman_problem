@@ -68,18 +68,29 @@ def checkmap():
         return render_template('pages/map/map_layout.html', location=location, latitude=latitude, longitude=longitude)
     return render_template('pages/forms/checkmap.html')
 
-
-
-@app.route('/checkroute', methods=['GET', 'POST'])
-def checkroute():
+@app.route('/checkoneroute', methods=['GET', 'POST'])
+def checkoneroute():
     if request.method == 'POST':
-        routes = request.form.getlist('locations')
-        print("routes",routes)
-        if not routes:
-            return render_template('pages/error.html', error="Invalid routes")
-        visit_sequence = optimal_route(routes)
-        print(visit_sequence)
-    return render_template('pages/forms/checkroutesform.html')
+        location = request.form['locations']
+        if not location:
+            return render_template('pages/error.html', error="Invalid location")
+        start_location = location[0].strip()
+        end_location = location[1].strip()
+        print("Start location: ", start_location, "End location: ", end_location)
+        return render_template('pages/map/map_layout.html', start_location=start_location, end_location=end_location)
+
+
+
+# @app.route('/checkroute', methods=['GET', 'POST'])
+# def checkroute():
+#     if request.method == 'POST':
+#         routes = request.form.getlist('locations')
+#         print("routes",routes)
+#         if not routes:
+#             return render_template('pages/error.html', error="Invalid routes")
+#         visit_sequence = optimal_route(routes)
+#         print(visit_sequence)
+#     return render_template('pages/forms/checkroutesform.html')
 
 
 @app.route('/add-location')
