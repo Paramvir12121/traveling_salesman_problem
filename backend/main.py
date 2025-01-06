@@ -82,10 +82,10 @@ def checkoneroute():
         if not start_coordinates or not end_coordinates:
             return render_template('pages/error.html', error="Location not found")
         # route, error = get_route([start_coordinates, end_coordinates])
-    
+
         print("Start location: ", start_location, "End location: ", end_location)
         # display the locaton on the map
-        
+        return render_template('pages/checkoneroute.html')
         # return render_template('pages/map/map_layout.html', start_location=start_location, end_location=end_location)
 
 
