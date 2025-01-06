@@ -78,12 +78,21 @@ def checkoneroute():
             return render_template('pages/error.html', error="Invalid location")
         start_location = start_location.strip()
         end_location = end_location.strip()
-        start_coordinates = get_coordinates(start_location)
-        end_coordinates = get_coordinates(end_location)
+        start_lat,start_long,start_cord_error = get_coordinates(start_location)
+        end_lat,end_long,end_cord_error = get_coordinates(end_location)
+        start_coordinates = [start_lat,start_long]
+        end_coordinates = [end_lat,end_long]
         
-        print("Start coordinates: ", start_coordinates, "End coordinates: ", end_coordinates)
         if not start_coordinates or not end_coordinates:
+            if start_cord_error and end_cord_error:
+                error_message = start_cord_error + " and " + end_cord_error
+                return render_template('pages/error.html', error=error_message)
+            elif start_cord_error:
+                return render_template('pages/error.html', error=start_cord_error)
+            elif end_cord_error:
+                return render_template('pages/error.html', error=end_cord_error)
             return render_template('pages/error.html', error="Location not found")
+        print("Start coordinates: ", start_coordinates, "End coordinates: ", end_coordinates)
         # route, error = get_route([start_coordinates, end_coordinates])
 
         print("Start location: ", start_location, "End location: ", end_location)

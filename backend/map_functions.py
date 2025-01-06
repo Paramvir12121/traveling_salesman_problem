@@ -23,7 +23,7 @@ def get_coordinates(location):
         if response.headers.get("Content-Type") == "application/json" or response.headers.get("Content-Type") == "application/json; charset=utf-8":
             data = response.json()
             if data:
-                return data[0]['lat'], data[0]['lon'], error
+                return float(data[0]['lat']), float(data[0]['lon']), None
             else:
                 return None, None, error
         else:
@@ -37,7 +37,7 @@ def get_coordinates(location):
         print(f"Error parsing response JSON: {e}")
         error = "Error parsing response JSON"
     
-    return [None, None, error]
+    return None, None, error
 
 
 def optimal_route(location_array):
