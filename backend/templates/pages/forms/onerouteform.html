@@ -1,11 +1,10 @@
 <div>
     <form id="route-point-input" hx-post="/checkoneroute" hx-swap="outerHTML">
         <div id="location-inputs">
-            <input type="text" name="locations" placeholder="Enter your location">
+            <input type="text" name="start_location" placeholder="Start Location">
+            <input type="text" name="end_location" placeholder="End Location">
+            <button type="submit">Submit</button>
         </div>
-        <div id="location-inputs">
-            <input type="text" name="locations" placeholder="Enter your location">
-        </div>
-        <button type="submit">Submit</button>
+        
     </form>
 </div>

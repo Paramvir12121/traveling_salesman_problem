@@ -71,13 +71,16 @@ def checkmap():
 @app.route('/checkoneroute', methods=['GET', 'POST'])
 def checkoneroute():
     if request.method == 'POST':
-        location = request.form['locations']
-        if not location:
+        start_location = request.form['start_location']
+        end_location = request.form['end_location']
+        print("start location",start_location, "end location", end_location)
+        if not start_location and not end_location:
             return render_template('pages/error.html', error="Invalid location")
-        start_location = location[0].strip()
-        end_location = location[1].strip()
+        start_location = start_location.strip()
+        end_location = end_location.strip()
         start_coordinates = get_coordinates(start_location)
         end_coordinates = get_coordinates(end_location)
+        
         print("Start coordinates: ", start_coordinates, "End coordinates: ", end_coordinates)
         if not start_coordinates or not end_coordinates:
             return render_template('pages/error.html', error="Location not found")
@@ -85,9 +88,9 @@ def checkoneroute():
 
         print("Start location: ", start_location, "End location: ", end_location)
         # display the locaton on the map
-        return render_template('pages/checkoneroute.html')
+        return render_template('pages/map/one_route_map.html', start_location=start_location, end_location=end_location)
         # return render_template('pages/map/map_layout.html', start_location=start_location, end_location=end_location)
-
+    return render_template('pages/forms/onerouteform.html')
 
 
 # @app.route('/checkroute', methods=['GET', 'POST'])

@@ -37,7 +37,7 @@ def get_coordinates(location):
         print(f"Error parsing response JSON: {e}")
         error = "Error parsing response JSON"
     
-    return None, None, error
+    return [None, None, error]
 
 
 def optimal_route(location_array):
