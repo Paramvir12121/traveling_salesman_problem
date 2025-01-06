@@ -3,7 +3,7 @@ from flask import render_template
 from flask import request
 from config import Config
 import requests
-from map_functions import get_coordinates, optimal_route
+from map_functions import get_coordinates, optimal_route,get_route
 
 
 app = Flask(__name__)
@@ -76,8 +76,17 @@ def checkoneroute():
             return render_template('pages/error.html', error="Invalid location")
         start_location = location[0].strip()
         end_location = location[1].strip()
+        start_coordinates = get_coordinates(start_location)
+        end_coordinates = get_coordinates(end_location)
+        print("Start coordinates: ", start_coordinates, "End coordinates: ", end_coordinates)
+        if not start_coordinates or not end_coordinates:
+            return render_template('pages/error.html', error="Location not found")
+        # route, error = get_route([start_coordinates, end_coordinates])
+    
         print("Start location: ", start_location, "End location: ", end_location)
-        return render_template('pages/map/map_layout.html', start_location=start_location, end_location=end_location)
+        # display the locaton on the map
+        
+        # return render_template('pages/map/map_layout.html', start_location=start_location, end_location=end_location)
 
 
 
