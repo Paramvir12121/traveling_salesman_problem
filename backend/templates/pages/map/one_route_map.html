@@ -1,4 +1,38 @@
+
 <div>
-    The route is here
-    {{ start_location }} to {{ end_location }}
+    Your start location is {{ start_location }} and end_location is {{end_location}}.
+    
+    <div id="map-container" ></div>
+    <br>
+
+    
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map; 
+        var start_lat = {{ latitude }};
+        var lon = {{ longitude }};
+       
+        document.body.addEventListener('htmx:afterSwap', (event) => {
+    // Check if the swapped content includes the map container
+    if (document.getElementById('map-container')) {
+        var map = L.map('map-container', {
+            center: [lat, lon],
+            zoom: 14
+        });
+        // if (map) {
+        //     map.remove(); // Remove the existing map instance
+        // }
+       
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        L.marker([lat, lon]).addTo(map);
+
+    }
+});
+    </script>
 </div>
+
+

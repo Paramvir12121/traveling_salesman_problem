@@ -41,7 +41,7 @@ def get_coordinates(location):
 
 
 def optimal_route(location_array):
-    
+    route = []
     base_coordinates = []
     error = None
     for i in range(len(location_array)):
