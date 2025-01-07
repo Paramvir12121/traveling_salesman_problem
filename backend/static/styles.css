@@ -132,3 +132,7 @@ input {
     width: 100%;
 }
 
+#map-route-container {
+    height: 400px;
+    width: 100%;
+}
