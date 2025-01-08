@@ -1,0 +1,9 @@
+<div id="nearest-neighbour-form">
+    <form id="nearest-neighbour-input" hx-post="/nearestnightbour" hx-swap="outerHTML">
+        <div id="location-inputs">
+            <input type="text" name="locations" placeholder="Enter your location">
+        </div>
+        <button type="button" hx-get="/add-location" hx-target="#location-inputs" hx-swap="beforeend">Add New Location</button>
+        <button type="submit">Submit</button>
+    </form>
+</div>

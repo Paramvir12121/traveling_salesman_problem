@@ -101,23 +101,15 @@ def checkoneroute():
     return render_template('forms/onerouteform.html')
 
 
-@app.route('/nearestnightbourroute', methods=['GET', 'POST'])
-def nearestnightbourroute():
+@app.route('/nearestnightbour', methods=['GET', 'POST'])
+def nearestnightbour():
     if request.method == 'POST':
-        location = request.form['location']
+        location = request.form.getlist('locations')
         print("location",location)
         if not location:
             return render_template('pages/error.html', error="Invalid location")
-        location = location.strip()
-        latitude, longitude, error = get_coordinates(location)
-        if error:
-            return render_template('pages/error.html', error=error)
-        
-        if not latitude or not longitude:
-            return render_template('pages/error.html', error="Location not found")
-        print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
-        # display the locaton on the map
-        return render_template('map/nearest_neighbour_map.html', location=location, latitude=latitude, longitude=longitude)
+        # location = location.strip()
+       
     return render_template('forms/nearestneighbourform.html')
 
 
