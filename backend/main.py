@@ -108,7 +108,17 @@ def nearestnightbour():
         print("location",location)
         if not location:
             return render_template('pages/error.html', error="Invalid location")
-        # location = location.strip()
+        for loc in location:
+            loc = loc.strip()
+            if not loc:
+                return render_template('pages/error.html', error="Invalid location")
+            print(loc)
+            latitude, longitude, error = get_coordinates(loc)
+            if error:
+                return render_template('pages/error.html', error=error)
+            if not latitude or not longitude:
+                return render_template('pages/error.html', error="Location not found")
+            print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
        
     return render_template('forms/nearestneighbourform.html')
 
