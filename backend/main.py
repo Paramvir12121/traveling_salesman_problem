@@ -3,32 +3,31 @@ from flask import render_template
 from flask import request
 from config import Config
 import requests
-from map_functions import get_coordinates, optimal_route,get_route
+from map_functions import get_coordinates, optimal_route, get_route
 
 
 app = Flask(__name__)
-
- 
-
-
-
 
 
 @app.route('/')
 def home():
     return render_template('pages/home.html')
 
+
 @app.route('/about')
 def about():
     return render_template('pages/about.html')
+
 
 @app.route('/test')
 def test():
     return render_template('pages/test.html')
 
+
 @app.route('/services')
 def services():
     return render_template('pages/services.html')
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -48,7 +47,6 @@ def contact():
     return render_template('pages/contact.html')
 
 
-
 @app.route('/checkmap', methods=['GET', 'POST'])
 def checkmap():
     if request.method == 'POST':
@@ -60,7 +58,7 @@ def checkmap():
         latitude, longitude, error = get_coordinates(location)
         if error:
             return render_template('pages/error.html', error=error)
-        
+
         if not latitude or not longitude:
             return render_template('pages/error.html', error="Location not found")
         print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
@@ -68,21 +66,23 @@ def checkmap():
         return render_template('map/map_layout.html', location=location, latitude=latitude, longitude=longitude)
     return render_template('forms/checkmap.html')
 
+
 @app.route('/checkoneroute', methods=['GET', 'POST'])
 def checkoneroute():
     if request.method == 'POST':
         start_location = request.form['start_location']
         end_location = request.form['end_location']
-        print("start location",start_location, "end location", end_location)
+        print("start location", start_location, "end location", end_location)
         if not start_location and not end_location:
             return render_template('pages/error.html', error="Invalid location")
         start_location = start_location.strip()
         end_location = end_location.strip()
-        start_lat,start_long,start_cord_error = get_coordinates(start_location)
-        end_lat,end_long,end_cord_error = get_coordinates(end_location)
-        start_coordinates = [start_lat,start_long]
-        end_coordinates = [end_lat,end_long]
-        
+        start_lat, start_long, start_cord_error = get_coordinates(
+            start_location)
+        end_lat, end_long, end_cord_error = get_coordinates(end_location)
+        start_coordinates = [start_lat, start_long]
+        end_coordinates = [end_lat, end_long]
+
         if not start_coordinates or not end_coordinates:
             if start_cord_error and end_cord_error:
                 error_message = start_cord_error + " and " + end_cord_error
@@ -92,11 +92,12 @@ def checkoneroute():
             elif end_cord_error:
                 return render_template('pages/error.html', error=end_cord_error)
             return render_template('pages/error.html', error="Location not found")
-        print("Start coordinates: ", start_coordinates, "End coordinates: ", end_coordinates)
+        print("Start coordinates: ", start_coordinates,
+              "End coordinates: ", end_coordinates)
         route = get_route([start_coordinates, end_coordinates])
-        print("Route: ", route) 
+        print("Route: ", route)
         # display the locaton on the map
-        return render_template('map/one_route_map.html', start_location=start_location, end_location=end_location,start_coordinates=start_coordinates,end_coordinates=end_coordinates, route=route)
+        return render_template('map/one_route_map.html', start_location=start_location, end_location=end_location, start_coordinates=start_coordinates, end_coordinates=end_coordinates, route=route)
         # return render_template('pages/map/map_layout.html', start_location=start_location, end_location=end_location)
     return render_template('forms/onerouteform.html')
 
@@ -105,9 +106,10 @@ def checkoneroute():
 def nearestnightbour():
     if request.method == 'POST':
         location = request.form.getlist('locations')
-        print("location",location)
+        print("location", location)
         if not location:
             return render_template('pages/error.html', error="Invalid location")
+        location_coordinates = []
         for loc in location:
             loc = loc.strip()
             if not loc:
@@ -118,19 +120,15 @@ def nearestnightbour():
                 return render_template('pages/error.html', error=error)
             if not latitude or not longitude:
                 return render_template('pages/error.html', error="Location not found")
+            location_coordinates.append([latitude, latitude])
             print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
-       
+        print("all location Coordiantes: ", location_coordinates)
     return render_template('forms/nearestneighbourform.html')
-
-
-
-
 
 
 @app.route('/add-location')
 def add_location():
-    return '<input type="text" name="locations" placeholder="Enter your location">'  
-
+    return '<input type="text" name="locations" placeholder="Enter your location">'
 
 
 if __name__ == '__main__':
