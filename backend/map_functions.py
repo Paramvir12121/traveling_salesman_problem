@@ -117,3 +117,13 @@ def nearest_neighbour(location_coordinates):
     route.append(route[0])
 
     return route, error
+
+# function to plot the route on the map
+def plot_route(route):
+    final_route = []
+    n = 0
+    for loc in range(len(route)-1):
+        local_route = get_route([route[n], route[n+1]])
+        final_route.append(local_route)
+        n += 1
+    return final_route
