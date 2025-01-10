@@ -3,7 +3,7 @@ from flask import render_template
 from flask import request
 from config import Config
 import requests
-from map_functions import get_coordinates, optimal_route, get_route
+from map_functions import get_coordinates, optimal_route, get_route,nearest_neighbour
 
 
 app = Flask(__name__)
@@ -120,9 +120,13 @@ def nearestnightbour():
                 return render_template('pages/error.html', error=error)
             if not latitude or not longitude:
                 return render_template('pages/error.html', error="Location not found")
-            location_coordinates.append([latitude, latitude])
+            location_coordinates.append([latitude, latitude, loc])
             print(f"Coordinates: Latitude={latitude}, Longitude={longitude}")
         print("all location Coordiantes: ", location_coordinates)
+        route,error = nearest_neighbour(location_coordinates)
+        print("Route: ", route)
+        # display the locaton on the map
+
     return render_template('forms/nearestneighbourform.html')
 
 

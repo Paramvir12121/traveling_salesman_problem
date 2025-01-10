@@ -1,5 +1,6 @@
 import requests
 from config import Config
+import math
 
 
 def get_coordinates(location):
@@ -81,16 +82,38 @@ def get_route(coordinates):
     else:
         return {"error": "Unable to fetch route from OSRM"}
 
+def calculate_distance(coord1, coord2):
+    # Calculate Euclidean distance between two coordinates
+    return math.sqrt((coord1[0] - coord2[0]) ** 2 + (coord1[1] - coord2[1]) ** 2)
 
+# location_coordinates = [[lat1, lon1, location_name1], [lat2, lon2, locaiton_name2],...]
 def nearest_neighbour(location_coordinates):
     route = []
     error = None
-    # remove the start location from location_coordinates and add to route
+    if not location_coordinates:
+        return route, error
+
+    # Start from the first location
     route.append(location_coordinates[0])
     location_coordinates.pop(0)
-    # now find the nearest neighbour to the last coordinate in location_coordinates
-    nearest_neighbour = None
-    nearest_distance = None
-    for coords in location_coordinates:
+
+    while location_coordinates:
+        last_location = route[-1]
+        nearest_neighbour = None
+        nearest_distance = float('inf')
+
+        for loc_info in location_coordinates:
+            coords = loc_info[:2]
+            distance = calculate_distance(last_location, coords)
+            if distance < nearest_distance:
+                nearest_distance = distance
+                nearest_neighbour = loc_info
+
+        if nearest_neighbour:
+            route.append(nearest_neighbour)
+            location_coordinates.remove(nearest_neighbour)
+
+    # Return to the starting point
+    route.append(route[0])
 
     return route, error
