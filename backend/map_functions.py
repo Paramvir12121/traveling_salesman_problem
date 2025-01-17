@@ -126,4 +126,5 @@ def plot_route(route):
         local_route = get_route([route[n], route[n+1]])
         final_route.append(local_route)
         n += 1
+    print("Final Route:", final_route)  # Debug print
     return final_route
