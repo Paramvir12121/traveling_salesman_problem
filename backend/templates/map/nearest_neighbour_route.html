@@ -1,0 +1,32 @@
+<div>
+    <!-- Your start location is {{ start_location }} and end location is {{end_location}}. -->
+    {{location}}
+    <div id="map-route-container" ></div>
+    <br>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var routeData = {{ route | tojson }};
+        var coords = routeData.map(function(route) {
+            return route.routes[0].geometry.coordinates.map(function(coord) {
+                return [coord[1], coord[0]]; // flip
+            });
+        }).flat();
+    
+        document.body.addEventListener('htmx:afterSwap', (event) => {
+            if (document.getElementById('map-route-container') && coords.length > 0) {
+                var map = L.map('map-route-container', {
+                    center: coords[0],
+                    zoom: 12
+                });
+    
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+    
+                L.polyline(coords, { color: 'blue' }).addTo(map);
+            }
+        });
+    </script>
+    </div>
+</div>

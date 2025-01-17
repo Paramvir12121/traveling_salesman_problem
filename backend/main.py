@@ -130,6 +130,7 @@ def nearestnightbour():
         final_route = []
         final_route = plot_route(route)
         print("Final Route: ", final_route)
+        return render_template('map/nearest_neighbour_route.html', location=location, route=final_route)
         # display the locaton on the map
 
     return render_template('forms/nearestneighbourform.html')
